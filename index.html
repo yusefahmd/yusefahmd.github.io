@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Name</title>
+
+  <style>
+    :root {
+      --bg: #0d1117;
+      --fg: #c9d1d9;
+      --muted: #8b949e;
+      --accent: #2f81f7;
+      --card: #161b22;
+      --border: #30363d;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+                   "Liberation Mono", "Courier New", monospace;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+    }
+
+    .header {
+      margin-bottom: 16px;
+    }
+
+    .name {
+      font-size: 1.6rem;
+      font-weight: 600;
+    }
+
+    .role {
+      color: var(--muted);
+      margin-top: 4px;
+      font-size: 0.95rem;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 20px 0;
+    }
+
+    .about {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: var(--fg);
+    }
+
+    .links {
+      margin-top: 20px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .link {
+      text-decoration: none;
+      color: var(--fg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.15s ease, border 0.15s ease;
+    }
+
+    .link:hover {
+      background: #1f6feb22;
+      border-color: var(--accent);
+    }
+
+    .label {
+      font-size: 0.95rem;
+    }
+
+    .arrow {
+      color: var(--muted);
+    }
+
+    .footer {
+      margin-top: 18px;
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <div class="header">
+      <div class="name">Your Name</div>
+      <div class="role">Security Engineer · Full-Stack Developer</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="about">
+      I work at the intersection of software engineering and security.
+      Interested in offensive security, threat detection, and building
+      systems that fail safely.
+    </div>
+
+    <div class="links">
+      <a class="link" href="mailto:you@example.com">
+        <span class="label">Email</span>
+        <span class="arrow">→</span>
+      </a>
+
+      <a class="link" href="https://github.com/yourusername" target="_blank">
+        <span class="label">GitHub</span>
+        <span class="arrow">→</span>
+      </a>
+
+      <a class="link" href="https://www.linkedin.com/in/yourname" target="_blank">
+        <span class="label">LinkedIn</span>
+        <span class="arrow">→</span>
+      </a>
+
+      <a class="link" href="/cv.pdf" target="_blank">
+        <span class="label">Résumé (PDF)</span>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+
+    <div class="footer">
+      Tap powered by NFC · Hosted on GitHub Pages
+    </div>
+  </div>
+</body>
+</html>
