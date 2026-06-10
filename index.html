@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Yusef Ahmed — Terminal</title>
+  <title>YOUR NAME — Terminal</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap');
 
@@ -11,24 +11,17 @@
 
     :root {
       --bg:      #0a0a0a;
-      --surface: #111111;
       --border:  #1f1f1f;
       --text:    #e8e8e8;
       --muted:   #555;
       --accent:  #c8f542;
       --accent2: #42f5a7;
-      --prompt:  #c8f542;
       --dim:     #333;
       --font:    'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
     }
 
-    /*
-      Single fluid base size: grows from 15px on small screens to 18px on wide.
-      Everything else uses em so it scales together with no extra media queries.
-    */
-    html {
-      font-size: clamp(15px, 1.1vw + 10px, 18px);
-    }
+    /* Single fluid base: 15px → 18px across screen widths */
+    html { font-size: clamp(15px, 1.1vw + 10px, 18px); }
 
     html, body {
       height: 100%;
@@ -48,12 +41,12 @@
       padding: 0 clamp(16px, 3vw, 32px);
     }
 
+    /* ── Header ── */
     header {
       padding: 1.5em 0 1em;
       border-bottom: 1px solid var(--border);
       flex-shrink: 0;
     }
-
     .site-title {
       font-size: 0.7em;
       font-weight: 700;
@@ -68,31 +61,30 @@
       overflow-y: auto;
       padding: 1em 0 0.5em;
       scroll-behavior: smooth;
+      /* Reset line-height here so wrapper divs don't add phantom spacing */
+      line-height: 1;
     }
-
     #output::-webkit-scrollbar { width: 3px; }
     #output::-webkit-scrollbar-track { background: transparent; }
     #output::-webkit-scrollbar-thumb { background: var(--dim); border-radius: 2px; }
 
+    /* Plain text output lines — e.g. intro messages */
     .output-line {
       white-space: pre-wrap;
       word-break: break-word;
       line-height: 1.5;
     }
+    .output-line + .output-line { margin-top: 0; }
 
-    .output-line.prompt-echo {
-      color: var(--muted);
-      margin-top: 0.8em;
-    }
+    .output-line.prompt-echo { color: var(--muted); margin-top: 0.9em; }
     .output-line.prompt-echo .pchar { color: var(--accent); }
     .output-line.error   { color: #f55; }
     .output-line.success { color: var(--accent2); }
     .output-line.accent  { color: var(--accent); }
     .output-line.dim     { color: var(--muted); }
 
-    .output-section {
-      margin: 0.35em 0 0.6em;
-    }
+    /* ── Section blocks (output from commands) ── */
+    .output-section { margin-top: 0.4em; margin-bottom: 0.5em; }
 
     .output-section h2 {
       font-size: 0.7em;
@@ -100,40 +92,47 @@
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--accent);
-      margin-bottom: 0.35em;
+      line-height: 1.5;
+      margin-bottom: 0.1em;
     }
 
+    /* Paragraphs inside sections */
     .output-section p {
       font-size: 1em;
+      line-height: 1.5;
       color: #bbb;
-      margin-bottom: 0.15em;
       max-width: 60ch;
+      /* No extra margin — lines sit flush like terminal output */
     }
 
     .output-section a { color: var(--accent2); text-decoration: none; }
     .output-section a:hover { text-decoration: underline; }
 
+    /*
+      kv-row: the main content row used by most commands.
+      No margin — rows sit directly on the line-height of their text.
+    */
     .kv-row {
       display: flex;
       gap: 1em;
-      margin-bottom: 0.1em;
       align-items: baseline;
+      line-height: 1.5;
     }
-    .kv-row .kv-key { color: var(--accent); min-width: 8em; font-size: 1em; }
-    .kv-row .kv-val { color: #bbb; font-size: 1em; }
+    .kv-row .kv-key { color: var(--accent); min-width: 8em; }
+    .kv-row .kv-val { color: #bbb; }
 
     .tag {
       display: inline-block;
       background: #1a1a1a;
       border: 1px solid var(--dim);
       border-radius: 2px;
-      padding: 0.05em 0.4em;
+      padding: 0 0.35em;
       font-size: 0.85em;
       color: #aaa;
-      margin: 0.1em 0.1em;
+      margin: 0 0.1em;
     }
 
-    /* ── Input ── */
+    /* ── Input row ── */
     #input-row {
       display: flex;
       align-items: center;
@@ -142,13 +141,7 @@
       border-top: 1px solid var(--border);
       flex-shrink: 0;
     }
-
-    .prompt-symbol {
-      color: var(--prompt);
-      font-size: 1em;
-      flex-shrink: 0;
-      user-select: none;
-    }
+    .prompt-symbol { color: var(--accent); font-size: 1em; flex-shrink: 0; user-select: none; }
 
     #input-wrap { flex: 1; position: relative; }
 
@@ -160,11 +153,11 @@
       color: var(--text);
       font-family: var(--font);
       font-size: 1em;
-      caret-color: var(--accent);
       line-height: 1.5;
+      caret-color: var(--accent);
     }
 
-    /* Autocomplete ghost text */
+    /* Ghost autocomplete text */
     #ghost {
       position: absolute;
       top: 0; left: 0;
@@ -173,7 +166,6 @@
       font-size: 1em;
       line-height: 1.5;
       white-space: pre;
-      color: transparent;
     }
     #ghost .ghost-typed { color: transparent; }
     #ghost .ghost-hint  { color: var(--dim); }
@@ -181,8 +173,7 @@
     /* Subtle scanlines */
     body::after {
       content: '';
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background: repeating-linear-gradient(
         0deg, transparent, transparent 2px,
         rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px
@@ -194,9 +185,9 @@
 </head>
 <body>
 <div id="app">
-  <!-- <header>
+  <header>
     <div class="site-title">YOUR NAME — v1.0</div>
-  </header> -->
+  </header>
 
   <div id="output"></div>
 
@@ -216,10 +207,11 @@
 // CONFIGURATION — edit this object to customise the site
 // ═══════════════════════════════════════════════════════
 const CONFIG = {
-  title: "Yusef Ahmed — v1.0",
-  // Lines shown at the top on load, before the command list
+  title: "YOUR NAME — v1.0",
+
+  // Lines shown at the very top, before the command list
   intro: [
-    { type: "accent", text: "Yusef Ahmed / Pentesting Consultant" },
+    { type: "accent", text: "YOUR NAME / your tagline here." },
     { type: "dim",    text: "Type a command below. Tab to autocomplete." },
   ],
 
@@ -263,18 +255,10 @@ const CONFIG = {
       desc: "Tools I use",
       run() {
         return section("STACK", `
-          <div class="kv-row"><span class="kv-key">Languages</span><span class="kv-val">
-            <span class="tag">TypeScript</span><span class="tag">Python</span><span class="tag">Rust</span>
-          </span></div>
-          <div class="kv-row"><span class="kv-key">Frontend</span><span class="kv-val">
-            <span class="tag">React</span><span class="tag">Tailwind</span>
-          </span></div>
-          <div class="kv-row"><span class="kv-key">Backend</span><span class="kv-val">
-            <span class="tag">Node.js</span><span class="tag">Postgres</span><span class="tag">Redis</span>
-          </span></div>
-          <div class="kv-row"><span class="kv-key">Tools</span><span class="kv-val">
-            <span class="tag">Neovim</span><span class="tag">Linear</span><span class="tag">Figma</span>
-          </span></div>
+          <div class="kv-row"><span class="kv-key">Languages</span><span class="kv-val"><span class="tag">TypeScript</span><span class="tag">Python</span><span class="tag">Rust</span></span></div>
+          <div class="kv-row"><span class="kv-key">Frontend</span><span class="kv-val"><span class="tag">React</span><span class="tag">Tailwind</span></span></div>
+          <div class="kv-row"><span class="kv-key">Backend</span><span class="kv-val"><span class="tag">Node.js</span><span class="tag">Postgres</span><span class="tag">Redis</span></span></div>
+          <div class="kv-row"><span class="kv-key">Tools</span><span class="kv-val"><span class="tag">Neovim</span><span class="tag">Linear</span><span class="tag">Figma</span></span></div>
         `);
       }
     },
@@ -306,7 +290,7 @@ const CONFIG = {
       run() {
         const rows = Object.entries(COMMANDS)
           .map(([name, cmd]) =>
-            `<div class="kv-row"><span class="kv-key" style="color:var(--accent)">${name}</span><span class="kv-val">${cmd.desc}</span></div>`
+            `<div class="kv-row"><span class="kv-key">${name}</span><span class="kv-val">${cmd.desc}</span></div>`
           ).join('');
         return section("COMMANDS", rows);
       }
@@ -314,7 +298,7 @@ const CONFIG = {
 
     clear: {
       desc: "Clear the screen",
-      run() { clearOutput(); return null; }
+      run() { resetToWelcome(); return null; }
     },
 
   }
@@ -323,42 +307,43 @@ const CONFIG = {
 
 const COMMANDS = CONFIG.commands;
 
+// ── Helpers ──
 function section(title, inner) {
   return `<div class="output-section"><h2>${title}</h2>${inner}</div>`;
 }
+
 function appendOutput(html, cls = '') {
   const output = document.getElementById('output');
   const div = document.createElement('div');
-  div.className = 'output-line ' + cls;
-  if (html) div.innerHTML = html;
+  div.className = 'output-line' + (cls ? ' ' + cls : '');
+  div.innerHTML = html;
   output.appendChild(div);
   output.scrollTop = output.scrollHeight;
 }
-function clearOutput() { document.getElementById('output').innerHTML = ''; }
+
+function resetToWelcome() {
+  document.getElementById('output').innerHTML = '';
+  CONFIG.intro.forEach(line => appendOutput(line.text, line.type));
+  appendOutput(COMMANDS.help.run());
+}
+
 function escapeHtml(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-// Intro lines then auto-render the command list (single source of truth)
-CONFIG.intro.forEach(line => appendOutput(line.text, line.type));
-appendOutput(COMMANDS.help.run());
+// ── Boot ──
+resetToWelcome();
 
-// History
+// ── History ──
 let history = [];
 let historyIndex = -1;
 
+// ── Command handler ──
 function handleCommand(raw) {
   const cmd = raw.trim().toLowerCase();
   if (!cmd) return;
 
   appendOutput(`<span class="pchar">❯</span> ${escapeHtml(cmd)}`, 'prompt-echo');
-
-  if (cmd === 'clear') {
-    clearOutput();
-    history.unshift(raw);
-    historyIndex = -1;
-    return;
-  }
 
   if (COMMANDS[cmd]) {
     const result = COMMANDS[cmd].run();
@@ -371,6 +356,7 @@ function handleCommand(raw) {
   historyIndex = -1;
 }
 
+// ── Input wiring ──
 const input      = document.getElementById('cmd-input');
 const ghostTyped = document.querySelector('#ghost .ghost-typed');
 const ghostHint  = document.querySelector('#ghost .ghost-hint');
