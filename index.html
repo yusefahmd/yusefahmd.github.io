@@ -10,16 +10,24 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #0a0a0a;
+      --bg:      #0a0a0a;
       --surface: #111111;
-      --border: #1f1f1f;
-      --text: #e8e8e8;
-      --muted: #555;
-      --accent: #c8f542;
+      --border:  #1f1f1f;
+      --text:    #e8e8e8;
+      --muted:   #555;
+      --accent:  #c8f542;
       --accent2: #42f5a7;
-      --prompt: #c8f542;
-      --dim: #333;
-      --font: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+      --prompt:  #c8f542;
+      --dim:     #333;
+      --font:    'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    }
+
+    /*
+      Single fluid base size: grows from 15px on small screens to 18px on wide.
+      Everything else uses em so it scales together with no extra media queries.
+    */
+    html {
+      font-size: clamp(15px, 1.1vw + 10px, 18px);
     }
 
     html, body {
@@ -27,8 +35,7 @@
       background: var(--bg);
       color: var(--text);
       font-family: var(--font);
-      font-size: 14px;
-      line-height: 1.6;
+      line-height: 1.5;
       overflow: hidden;
     }
 
@@ -36,45 +43,46 @@
       display: flex;
       flex-direction: column;
       height: 100vh;
-      max-width: 900px;
+      max-width: 860px;
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 clamp(16px, 3vw, 32px);
     }
 
     header {
-      padding: 32px 0 20px;
+      padding: 1.5em 0 1em;
       border-bottom: 1px solid var(--border);
       flex-shrink: 0;
     }
 
     .site-title {
-      font-size: 11px;
+      font-size: 0.7em;
       font-weight: 700;
       letter-spacing: 0.25em;
       text-transform: uppercase;
       color: var(--accent);
     }
 
+    /* ── Output ── */
     #output {
       flex: 1;
       overflow-y: auto;
-      padding: 20px 0 8px;
+      padding: 1em 0 0.5em;
       scroll-behavior: smooth;
     }
 
-    #output::-webkit-scrollbar { width: 4px; }
+    #output::-webkit-scrollbar { width: 3px; }
     #output::-webkit-scrollbar-track { background: transparent; }
     #output::-webkit-scrollbar-thumb { background: var(--dim); border-radius: 2px; }
 
     .output-line {
-      margin-bottom: 2px;
       white-space: pre-wrap;
       word-break: break-word;
+      line-height: 1.5;
     }
 
     .output-line.prompt-echo {
       color: var(--muted);
-      margin-top: 14px;
+      margin-top: 0.8em;
     }
     .output-line.prompt-echo .pchar { color: var(--accent); }
     .output-line.error   { color: #f55; }
@@ -82,21 +90,24 @@
     .output-line.accent  { color: var(--accent); }
     .output-line.dim     { color: var(--muted); }
 
-    .output-section { margin: 8px 0 14px; }
+    .output-section {
+      margin: 0.35em 0 0.6em;
+    }
 
     .output-section h2 {
-      font-size: 11px;
+      font-size: 0.7em;
       font-weight: 700;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--accent);
-      margin-bottom: 10px;
+      margin-bottom: 0.35em;
     }
 
     .output-section p {
+      font-size: 1em;
       color: #bbb;
-      margin-bottom: 6px;
-      max-width: 620px;
+      margin-bottom: 0.15em;
+      max-width: 60ch;
     }
 
     .output-section a { color: var(--accent2); text-decoration: none; }
@@ -104,36 +115,37 @@
 
     .kv-row {
       display: flex;
-      gap: 16px;
-      margin-bottom: 4px;
+      gap: 1em;
+      margin-bottom: 0.1em;
       align-items: baseline;
     }
-    .kv-row .kv-key { color: var(--accent); min-width: 120px; font-size: 12px; }
-    .kv-row .kv-val { color: #bbb; font-size: 12px; }
+    .kv-row .kv-key { color: var(--accent); min-width: 8em; font-size: 1em; }
+    .kv-row .kv-val { color: #bbb; font-size: 1em; }
 
     .tag {
       display: inline-block;
       background: #1a1a1a;
       border: 1px solid var(--dim);
       border-radius: 2px;
-      padding: 2px 8px;
-      font-size: 11px;
+      padding: 0.05em 0.4em;
+      font-size: 0.85em;
       color: #aaa;
-      margin: 2px 2px;
+      margin: 0.1em 0.1em;
     }
 
+    /* ── Input ── */
     #input-row {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 16px 0 20px;
+      gap: 0.5em;
+      padding: 0.75em 0 1em;
       border-top: 1px solid var(--border);
       flex-shrink: 0;
     }
 
     .prompt-symbol {
       color: var(--prompt);
-      font-size: 16px;
+      font-size: 1em;
       flex-shrink: 0;
       user-select: none;
     }
@@ -147,22 +159,26 @@
       outline: none;
       color: var(--text);
       font-family: var(--font);
-      font-size: 14px;
+      font-size: 1em;
       caret-color: var(--accent);
+      line-height: 1.5;
     }
 
+    /* Autocomplete ghost text */
     #ghost {
       position: absolute;
       top: 0; left: 0;
       pointer-events: none;
       font-family: var(--font);
-      font-size: 14px;
+      font-size: 1em;
+      line-height: 1.5;
       white-space: pre;
       color: transparent;
     }
     #ghost .ghost-typed { color: transparent; }
     #ghost .ghost-hint  { color: var(--dim); }
 
+    /* Subtle scanlines */
     body::after {
       content: '';
       position: fixed;
@@ -174,17 +190,12 @@
       pointer-events: none;
       z-index: 999;
     }
-
-    @media (max-width: 600px) {
-      #app { padding: 0 16px; }
-      header { padding: 20px 0 14px; }
-    }
   </style>
 </head>
 <body>
 <div id="app">
   <!-- <header>
-    <div class="site-title">Yusef Ahmed</div>
+    <div class="site-title">YOUR NAME — v1.0</div>
   </header> -->
 
   <div id="output"></div>
@@ -206,10 +217,10 @@
 // ═══════════════════════════════════════════════════════
 const CONFIG = {
   title: "Yusef Ahmed — v1.0",
-  // These lines appear at the very top on load, before the command list
+  // Lines shown at the top on load, before the command list
   intro: [
-    { type: "accent", text: "Yusef Ahmed / Pentesting Consultant." },
-    { type: "dim",    text: "Type your commands in the prompt below. Tab to autocomplete." },
+    { type: "accent", text: "Yusef Ahmed / Pentesting Consultant" },
+    { type: "dim",    text: "Type a command below. Tab to autocomplete." },
   ],
 
   commands: {
@@ -328,7 +339,7 @@ function escapeHtml(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-// Intro lines, then auto-render the command list (single source of truth)
+// Intro lines then auto-render the command list (single source of truth)
 CONFIG.intro.forEach(line => appendOutput(line.text, line.type));
 appendOutput(COMMANDS.help.run());
 
